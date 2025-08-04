@@ -1,0 +1,54 @@
+\documentclass{article}      % Specifies the document class
+
+\title{Some suggestions on Perl Evangelism}
+\author{Stuart Cooper\\stuart.cooper@gmail.com\\Sydney Perl User Group}
+\date{August 20, 2025}
+
+
+\begin{document}             % End of preamble and beginning of text.
+
+\maketitle                   % Produces the title.
+
+This is a rehash of a talk I gave to the Sydney Perl User's Group in
+2015; almost exactly ten years ago. We look at some practical ways to
+promote Perl to your co-workers; who may be intelligent sysadmins,
+Python/Ruby/Go Developers or other I.T workers. Certainly Linux people
+who spend a lot of time at the shell.
+
+\begin{itemize}
+  \item Religious Evangelism: Don't preach, be a good example that
+    people want to follow.
+  \item Make yourself known as The Perl Guy
+  \item Be patient at all time. Don't call people Morons or other
+    names. 
+  \item Play to Perl's strengths. Regular Expressions. Glue
+    language. Rapid development. Quick protoyping.
+  \item Make sure you have the Perl that you want; both on your
+    development machine and on your company's servers (nodes if you
+    like). You're progrably using Puppet or Ansible to keep them
+    conformed so if you need a change across all machines, do it
+    through approved mechanisms.
+  \item \emph{Make sure that perldoc is installed properly and that
+  you can run it as root} If you're demoing stuff at the shell on some
+    random server and you reach for perldoc and it isn't there you're
+    going to look pretty stupid and your co-worker will lose interest
+    pretty quickly.
+  \item Know handy command line switches and know some good Perl one
+    liners. In particular know how to do common sed jobs in Perl and
+    common awk jobs in Perl. A staggering number of awk programs are
+% FIXME: figure out the LaTex below it's quite tcicky
+    just \verb{somecommand | awk '{print \$3\} ' so know how to do that
+    in Perl. When a guy showed me this I said ``well that's easy to do
+    in awk'' and he simply said ``I don't need to know awk''.
+  \item Avoid jargon, in-jokes and arcana that are fun to Perl people
+    but forbidding and exclusionary to newcomers. Notice that in both
+    my talks tonight I've said Sydney Perl User's Group, not
+    Sydney.pm. Sydney.pm is an injoke among Perl people, a Sydney Perl
+    User's Group is a User's Group for Sydney Perl users cf. SLUG.
+  \item Be aware of how to get a working Cron job written in Perl:
+    Environment variables, configuration file syntax and so on.
+  
+\end{itemize}
+
+
+\end{document}               % End of document.
