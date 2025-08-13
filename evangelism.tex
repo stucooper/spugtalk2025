@@ -166,8 +166,8 @@ charm. Here's a more idiomatic version of it:
 
 \begin{verbatim}
 #!/usr/bin/perl
-# pls: perl ls; run ls -l but stick placeholding commas in big
-# filenames
+# pls: perl ls; run ls -l but stick placeholding commas in
+# filesizes 5 digits or more
 
 use strict;
 use warnings;
@@ -190,7 +190,16 @@ sub addcomma {
   $r = substr($r,1) if (substr($r,0,1) eq ',');
   return $r;
 }
+\end{verbatim}
 
+Here's pls in action in my dwhelper directory
+\begin{verbatim}
+/home/scooper/dwhelper: ls -l | tail -2
+-rw-rw-r-- 1 scooper scooper   27142819 Mar 29  2024 winx_cox_plate2.mp4
+-rw-rw-r-- 1 scooper scooper    8711631 Dec  9  2024 zero_would_be_nice.mp4
+/home/scooper/dwhelper: pls | tail -2
+-rw-rw-r-- 1 scooper scooper   27,142,819 Mar 29  2024 winx_cox_plate2.mp4
+-rw-rw-r-- 1 scooper scooper    8,711,631 Dec  9  2024 zero_would_be_nice.mp4
 \end{verbatim}
 
 \end{document}               % End of document.
