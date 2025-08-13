@@ -36,7 +36,7 @@ who spend a lot of time at the shell.
   \item Know handy command line switches and know some good Perl one
     liners. In particular know how to do common sed jobs in Perl and
     common awk jobs in Perl. A staggering number of awk programs are
-% FIXME: figure out the LaTex below it's quite tcicky
+% FIXME: figure out the LaTex below it's quite tricky
     just \verb{somecommand | awk '{print \$3\} ' so know how to do that
     in Perl. When a guy showed me this I said ``well that's easy to do
     in awk'' and he simply said ``I don't need to know awk''.
@@ -79,7 +79,7 @@ brushed me off, he didn't need any more help from me, I even found him
 a bit rude though a better way to express this was just that he was
 very focussed.
 
-Adam was OK at Perl. Better than OK. He was ADAMK.
+Adam was OK at Perl. He was better than OK, he was ADAMK.
 
 You never know what helping a colleague use Perl will lead to.
 
@@ -112,5 +112,87 @@ of some Perl programs and features. Try not to overwhelm your
 colleague and you're not trying to show off your mad skillz and
 superiority. See what your friend is interested in and tailor your
 material so it's immediately useful to him.
+
+\section{How I came to Perl}
+
+After my University days (1989-1992) in Newcastle NSW, I got a first
+job in Sydney for Unidata, a database running across all the Unixes
+and a migration to Unix systems path for users of old systems like
+Pick and PRIME. An important part of Unidata's IP were conversion
+tools; to transform Pick Basic and PRIME Basic into Unidata's flavour
+of Basic.
+
+These tools were written in the most powerful data transforming tools
+available in UNIX pre-Perl; lex and yacc. I was decently good at lex
+at Uni and became much better at it at Unidata; sadly yacc always
+terrified me and I never took the trouble to understand it.
+
+There were over sixty versions of UNIX that Unidata ran on. The most
+important were SunOS (later Solaris), HP/UX, IBM/AIX and SCO UNIX for
+the smallest customers. Two more boutique UNIXes I spent a lot of time
+with were Silicon Graphics UNIX and Data General UNIX, DG/UX, which
+had Emacs, gcc and a bunch of goodies pre-installed.
+
+I fell wildly in love with the O'Reilly books; particularly UNIX in a
+Nutshell SVR4 edition. It was the best \$25 I'd ever spent; I still
+have my copy and it's been used so much that the plastic film has been
+scraped off the front cover through years of me touching the
+book. One year things were pretty quiet over Christmas and my wise
+boss encouraged me to learn Emacs from the chapter in UNIX in a
+Nutshell and any other resources I could find. Three days later, I was
+a happy Emacs user and remain just as happy today.
+
+There was an O'Reilly book that was waaaaay overpriced, at \$120. Lex
+and Yacc was pretty steep at \$60 but \$120 for a mega-book was too
+much for me to spend on a book. My boss had it and occasionally if I
+was good or I had a justified need to I could use his copy which he
+kept in the office. That book was UNIX Power Tools; not with a
+cutesy animal on the cover like a Tarsir or a Lex Bird and Yacc Bird,
+but a power drill. It collected all the text processing advice from
+other O'Reilly books and also had a lot of Perl content; which was
+starting to be a hot new language in the UNIX world.
+
+\subsection{My first Perl program}
+
+Sadly I didn't write any surviving Perl for Unidata but I did at my
+first contract job, for Commonwealth Bank, in 1998. On AT\&T Unix, I
+was working in some directories with big files in them and my eyes got
+tired of looking at ls -l output and figuring if a file of 17435346
+bytes was 17 million or 1.7 million or 174 million bytes. I wanted
+placeholder commas in the output, so the filesize would be reported
+as 17,435,346.
+
+Coming from a C and lex background and not so strong in shell; the
+Perl program was verbose and not idiomatic Perl at all but it worked a
+charm. Here's a more idiomatic version of it:
+
+\begin{verbatim}
+#!/usr/bin/perl
+# pls: perl ls; run ls -l but stick placeholding commas in big
+# filenames
+
+use strict;
+use warnings;
+
+my (@lslines) = `ls -l`;
+foreach (@lslines) {
+  chomp;
+  s/(\d{5,})/addcomma($1)/e;
+  print "$_\n";
+}
+
+sub addcomma {
+  my ($n) = @_;
+  my $r = q{};
+  my $l = length($n);
+  for ( 1 .. $l) {
+    $r = substr($n, $l-$_, 1) . $r;
+    if ( $_ %3 == 0 ) { $r = ',' . $r; }
+  }
+  $r = substr($r,1) if (substr($r,0,1) eq ',');
+  return $r;
+}
+
+\end{verbatim}
 
 \end{document}               % End of document.
