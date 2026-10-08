@@ -1,0 +1,146 @@
+\documentclass{article}
+
+\title{Problem Incident Review INC0463342}
+\author{Stuart Cooper\\stuart.cooper@uts.edu.au\\University of
+  Technology, Sydney}
+\date{October 9, 2026}
+
+% keep the LaTeX as dead simple as possible as I'd like to do a
+% perlpod version of this and allow reformat to HTML, txt, man, LaTeX
+% you name it. But to be honest the first version of this is in Ye
+% Olde LaTeX
+
+\begin{document}
+
+\maketitle
+
+\section{Root Causes}
+
+\subsection{Assumptions}
+
+%FIXME: itemize three or four assumptions??
+
+Simplistic assumptions made the work seem a lot simpler than it turned
+out to be. It was assumed that the changes at the Linux side would be
+entirely at the DNS level; change the MX (Mail eXchanger) records for
+several domains like EXAMPLE1.uts.edu.au and EXAMPLE2.uts.edu.au,
+watch those changes propagate to the Internet and go home on a
+Saturday afternoon.
+
+It was also assumed that Abnormal was a drop-in replacement for
+Mimecast. Whatever Mimecast had done for us in the past, Abnormal
+would do after a cutover.
+
+\subsection{Changes too early}
+
+The DNS changes just mentioned were done on August 22nd while Mimecast
+service was switched off on September FIXME. It's normally a great
+idea to get part of the work done well ahead of time, but in this
+instance a five-week gap between the DNS changes and the Mimecast
+switchoff meant a lot of effort was needed to get back into an
+email-fix frame of mind and the August changes were not in our recent
+memory.
+
+\subsection{No Mimecast involvement}
+
+I'm guessing that any support contract UTS had with Mimecast had
+expired well before service was switched off and it would have been
+expensive and even embarassing to engage their support just as we
+were removing them from the UTS email ecosystem. The fact remains that
+we were unsure just what Mimecast did and had to discover the
+behaviour in an incident situation.
+
+\section{What went wrong}
+
+I was genuinely surprised that the initial focus of the incidents was
+on the listserv issue and not outgoing email to UTS and the Internet
+in general. Why were tickets on failed email lists growing in number
+while nobody was reporting the (to my mind) larger issue of missing
+emails?
+
+It turns out the problem of missing outgoing emails was reported, but
+ServiceNow automatically closed the ticket. A Service Now analyst
+correctly asked the reported for more information, this information
+was provided, but the ticket stayed in ``Customer On-Hold'' status for
+three days and was auto-closed. The issue was not surfaced to the
+Linux team until FIXME.
+
+%FIXME: explanation of weekly Tuesday supplier invoice payments on
+%Tuesdays
+
+\section{What went right}
+
+The MIM Teams channel performed well and there was excellent
+co-operation across a range of disciplines featuring Microsoft Email
+(Taylor Johnson), Networking and F5 (David Garabito), Site
+Certificates (Felix Wu) and Identity (Iain Rayner).
+
+The MIM bridge on the listserv issue was led by FIXME and the
+following week's MIM bridge on outgoing email was led by FIXME.
+Both leaders did a fine job and gave the technical workers time and
+capacity to develop fixes.
+
+The postfix email program is a best-of-breed solution for Linux (and
+before then, UNIX) systems. While running older versions on old
+versions of RedHat Enterprise Linux, it handled client-side and
+server-side certificate management with a simple configuration change.
+Postfix is easy to configure and during the incident we were able to
+apply changes and have them in effect in the space of minutes.
+
+The GNU mailman program is the earliest open source program still in
+widespread use to be written in Python. 
+
+\section{Esential Recommendations}
+
+I offer three recommendations that will help prevent issues the next
+time there is a major email change.
+
+\subsection{Document email flows on a single Confluence page}
+
+All end-to-end email flows need to be documented on a single
+Confluence page.
+
+Internal Linux to UTS emails
+Internal Linux to Internet emails
+Internal Linux to listserv emails
+% FIXME: is Internal Linux to neomail a thing??
+Internal Linux to neomail
+
+\subsection{Documentation of Abnormal}
+
+A separate Confluence page should explain the role of Abnormal in the
+UTS email ecosystem.
+
+\subsection{Establish standard email addresses}
+
+The standard email addresses hostmaster@uts.edu.au (for Internet users
+to report DNS issues) aud postmaster@uts.edu.au (for Internet users to
+report email issues) should be set up. These email addresses can be
+done as Microsoft DLs (Distribution Lists), exclusively to @uts.edu.au
+adddresses, that grow and shrink over time as staff join and leave.
+
+\section{Further recommendations}
+
+These recommendations should occur through normal quarterly planning
+processes.
+
+\subsection{Replace listserv email lists with Microsoft DLs}
+
+While GNU mailman does its job well, more people in an enterprise will
+be familiar with Microsoft Distribution Lists. Indeed, some listserv
+mailing lists were already migrated to DLs by Suggi and Jorge. Mailman
+provides a web frontend to messages which DLs probably don't.
+
+\subsection{Upgrade Linux postoffice servers and postfix versions}
+
+The two postoffice Linux servers should be upgraded to RHEL 9 and the
+standard postfix version provided with that version of RedHat
+Enterprise Linux.
+
+\subsection{Review the role of cluebringer}
+
+A large Perl application, cluebringer, is used in the UTS mail
+ecosystem for rate limiting emails and other functions. 
+
+
+\end{document}
