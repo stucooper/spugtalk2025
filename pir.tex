@@ -1,18 +1,33 @@
 \documentclass{article}
 
-\title{Problem Incident Review INC0463342}
+\title{Problem Incident Review INC0352662}
 \author{Stuart Cooper\\stuart.cooper@uts.edu.au\\University of
   Technology, Sydney}
-\date{October 9, 2026}
+\date{October 12, 2026}
 
 % keep the LaTeX as dead simple as possible as I'd like to do a
 % perlpod version of this and allow reformat to HTML, txt, man, LaTeX
 % you name it. But to be honest the first version of this is in Ye
 % Olde LaTeX
 
+\setcounter{secnumdepth}{1}
 \begin{document}
 
 \maketitle
+
+\section{The Incidents}
+
+This PIR covers two related email incidents. INC0352662 concerns
+outgoing email from internal UTS Linux applications not being received
+by vendors (``outgoing''), INC0351580 covers emails in and out of a
+mailing list system (``listserv'').
+
+Both incidents occured after the decommissioning of Mimecast from the
+UTS email ecosysten. This work occurred in two stages, DNS changes to
+point email away from Mimecast systems and towards Microsoft systems
+on 22nd August (CHG0037414) and the switchoff of Mimecast services on
+Thursday 10th September (by Mimecast, since we'd paid for service up
+until but not beyond that date).
 
 \section{Root Causes}
 
@@ -23,20 +38,20 @@
 Simplistic assumptions made the work seem a lot simpler than it turned
 out to be. It was assumed that the changes at the Linux side would be
 entirely at the DNS level; change the MX (Mail eXchanger) records for
-several domains like EXAMPLE1.uts.edu.au and EXAMPLE2.uts.edu.au,
+several domains like chere.uts.edu.au and socs.uts.edu.au,
 watch those changes propagate to the Internet and go home on a
 Saturday afternoon.
 
 It was also assumed that Abnormal was a drop-in replacement for
 Mimecast. Whatever Mimecast had done for us in the past, Abnormal
-would do after a cutover.
+would do after the cutover.
 
 \subsection{Changes too early}
 
 The DNS changes just mentioned were done on August 22nd while Mimecast
-service was switched off on September FIXME. It's normally a great
+service was switched off on September 10. It's normally a great
 idea to get part of the work done well ahead of time, but in this
-instance a five-week gap between the DNS changes and the Mimecast
+instance a twenty-day gap between the DNS changes and the Mimecast
 switchoff meant a lot of effort was needed to get back into an
 email-fix frame of mind and the August changes were not in our recent
 memory.
@@ -45,25 +60,26 @@ memory.
 
 I'm guessing that any support contract UTS had with Mimecast had
 expired well before service was switched off and it would have been
-expensive and even embarassing to engage their support just as we
-were removing them from the UTS email ecosystem. The fact remains that
-we were unsure just what Mimecast did and had to discover the
+expensive and awkward to engage their support just as we
+were finishing our association with them. The fact remains that
+we were unsure just what Mimecast did and had to re-discover this
 behaviour in an incident situation.
 
 \section{What went wrong}
 
-I was genuinely surprised that the initial focus of the incidents was
+I was quite surprised that the initial focus of the incidents was
 on the listserv issue and not outgoing email to UTS and the Internet
 in general. Why were tickets on failed email lists growing in number
 while nobody was reporting the (to my mind) larger issue of missing
-emails?
+outgoing emails?
 
 It turns out the problem of missing outgoing emails was reported, but
 ServiceNow automatically closed the ticket. A Service Now analyst
-correctly asked the reported for more information, this information
-was provided, but the ticket stayed in ``Customer On-Hold'' status for
+correctly asked the reporter for more information, the reporter
+gave the information needed (but using a direct Service Now interface)
+and the ticket stayed in ``Customer On-Hold'' status for
 three days and was auto-closed. The issue was not surfaced to the
-Linux team until FIXME.
+Linux team until days after the listserv issue.
 
 %FIXME: explanation of weekly Tuesday supplier invoice payments on
 %Tuesdays
@@ -74,18 +90,19 @@ The MIM Teams channel performed well and there was excellent
 co-operation across a range of disciplines featuring Microsoft Email
 (Taylor Johnson), Networking and F5 (David Garabito), Site
 Certificates (Felix Wu) and Identity (Iain Rayner).
+The MIM bridge on the listserv issue was led by Steve Dean and the
+following week's MIM bridge on the outgoing issue was led by Ray
+Miller.
+% suck-up? Both leaders did an excellent job and gave the technical
+% workers time and capacity to develop fixes.
 
-The MIM bridge on the listserv issue was led by FIXME and the
-following week's MIM bridge on outgoing email was led by FIXME.
-Both leaders did a fine job and gave the technical workers time and
-capacity to develop fixes.
-
-The postfix email program is a best-of-breed solution for Linux (and
-before then, UNIX) systems. While running older versions on old
-versions of RedHat Enterprise Linux, it handled client-side and
-server-side certificate management with a simple configuration change.
-Postfix is easy to configure and during the incident we were able to
-apply changes and have them in effect in the space of minutes.
+The postfix email program is a best-of-breed Mail Transfer Agent for
+Linux (and before then, UNIX) systems. While UTS runs an old versions on
+an old versions of RedHat Enterprise Linux, Postfix handled
+client-side and server-side certificate management with a simple
+configuration change. Postfix is easy to configure and during the
+incident we were able to apply changes and have them in effect in the
+space of minutes.
 
 The GNU mailman program is the earliest open source program still in
 widespread use to be written in Python. 
@@ -100,11 +117,13 @@ time there is a major email change.
 All end-to-end email flows need to be documented on a single
 Confluence page.
 
-Internal Linux to UTS emails
-Internal Linux to Internet emails
-Internal Linux to listserv emails
+\begin{itemize}
+  \item Internal Linux to UTS emails
+  \item Internal Linux to Internet emails
+  \item Internal Linux to listserv emails
 % FIXME: is Internal Linux to neomail a thing??
-Internal Linux to neomail
+  \item Internal Linux to neomail
+\end{itemize}
 
 \subsection{Documentation of Abnormal}
 
