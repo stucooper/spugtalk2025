@@ -20,7 +20,7 @@
 This PIR covers two related email incidents. INC0352662 concerns
 outgoing email from internal UTS Linux applications not being received
 by vendors (``outgoing''), INC0351580 covers emails in and out of a
-mailing list system (``listserv'').
+mailing list management system (``listserv'').
 
 Both incidents occured after the decommissioning of Mimecast from the
 UTS email ecosysten. This work occurred in two stages, DNS changes to
@@ -46,7 +46,7 @@ It was also assumed that Abnormal was a drop-in replacement for
 Mimecast. Whatever Mimecast had done for us in the past, Abnormal
 would do after the cutover.
 
-\subsection{Changes too early}
+\subsection{Changes wide apart}
 
 The DNS changes just mentioned were done on August 22nd while Mimecast
 service was switched off on September 10. It's normally a great
@@ -64,6 +64,26 @@ expensive and awkward to engage their support just as we
 were finishing our association with them. The fact remains that
 we were unsure just what Mimecast did and had to re-discover this
 behaviour in an incident situation.
+
+\subsection{Non-Standard Configurations}
+
+Understanding the UTS email system was made more difficult due to some
+non-standard configuration. For a while the listserv.uts.edu.au server
+was considered to be external to UTS because mail generated in the UTS
+network for listserv was routed out to Mimecast and not kept internal
+to the UTS network. This anomaly has been fixed and internal mail to
+listserv is now routed directly to that server.
+
+The listserv postfix configuration itself hadn't been touched in
+thirteen years! Postfix configuration for endpoints is trivially
+simple so it was ``set and forget''. After the Mimecast switchoff the
+listserv configuration was changed to present a server certificate to
+external-source emails.
+
+Another non-standard configuration, handled before August 22nd and
+fully functional both before and after the Mimecast switchoff, was the
+handling of the fhrmail@uts.edu.au email as an alias for a
+production @neomail.uts.edu.au.
 
 \section{What went wrong}
 
@@ -121,9 +141,15 @@ Confluence page.
   \item Internal Linux to UTS emails
   \item Internal Linux to Internet emails
   \item Internal Linux to listserv emails
+  \item Internet email to listserv emails
 % FIXME: is Internal Linux to neomail a thing??
   \item Internal Linux to neomail
+  \item Internet to UTS emails
+  \item UTS to Internet emails
 \end{itemize}
+
+``Internal Linux'' encompasses several systmes; building management,
+Boomi, Cognos, Dell and Neo.
 
 \subsection{Documentation of Abnormal}
 
@@ -159,7 +185,14 @@ Enterprise Linux.
 \subsection{Review the role of cluebringer}
 
 A large Perl application, cluebringer, is used in the UTS mail
-ecosystem for rate limiting emails and other functions. 
+ecosystem for rate limiting emails and other functions. This
+functionality should be reviewed and understood.
 
+\subsection{Audit failing emails twice a year}
+
+UTS conducts an audit of their Linux systems twice a year. I recommend
+that a small additional task be added to the audit: look at the
+mail logs on Postoffice and find failing emails and remediate
+emails to departed employees and non-existant addresses.
 
 \end{document}
